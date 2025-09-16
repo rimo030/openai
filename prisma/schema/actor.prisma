@@ -1,0 +1,25 @@
+/// 사용자.
+///
+/// @namespace Actor
+model User {
+    /// PK
+    id String @id @db.Uuid
+
+    /// 회원 아이디
+    member_id String? @db.Uuid
+
+    /// IP 주소
+    ///
+    ///
+    ip String
+
+    /// 데이터 생성 날짜
+    created_at DateTime @db.Timestamptz
+
+    /// relations
+    socket_logs  SocketLog[]
+    token_usages TokenUsage[]
+
+    @@index([member_id])
+    @@index([created_at])
+}

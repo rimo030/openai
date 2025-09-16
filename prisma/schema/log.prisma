@@ -1,0 +1,139 @@
+/// 로그 테이블
+///
+///
+/// @namespace Log
+model Log {
+    /// PK 아이디
+    ///
+    ///
+    id String @id
+
+    /// HTTP 메서드
+    ///
+    /// 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' 
+    method String
+
+    /// 요청 url
+    ///
+    /// request path
+    url String
+
+    /// 요청 헤더
+    ///
+    /// req.headers
+    headers String
+
+    /// 요청 쿼리
+    ///
+    /// req.query
+    query String?
+
+    /// 요청 파라미터
+    ///
+    /// req.params
+    param String?
+
+    /// 요청 바디
+    ///
+    /// req.body
+    body String?
+
+    /// ttl 
+    ///
+    /// ms 단위, 해당 요청에 대한 요청부터 응답까지의 시간. 
+    /// 값이 null이면 서버가 응답을 하지 않고 장애가 발생한 것.
+    ttl Int?
+
+    /// 에러 발생 여부
+    ///
+    /// ture면 에러로 판단.
+    error Boolean
+
+    /// 응답 값
+    ///
+    /// 에러 발생시 에러 내용이 담긴다.
+    response String?
+
+    /// 요청이 생성된 시간
+    ///
+    /// 응답 시간은 해당 칼럼에 ttl을 더함으로써 알 수 있다.
+    created_at DateTime @db.Timestamptz
+
+    @@index([created_at])
+    @@index([error])
+    @@index([url])
+    @@index([method])
+    @@index([headers])
+}
+
+/// 소켓 로그
+///
+///
+/// @namespace Log
+model SocketLog {
+    /// PK 아이디
+    ///
+    /// 
+    id String @id @db.Uuid
+
+    /// 요청 아이디
+    ///
+    /// 한 번의 소켓 요청에 대해서는 동일한 request_id를 가져야 한다.
+    request_id String @db.Uuid
+
+    /// 아이피 주소
+    ///
+    ///
+    ip String?
+
+    /// 유저 아이디
+    ///
+    ///
+    user_id String? @db.Uuid
+
+    /// 멤버 아이디
+    ///
+    ///
+    member_id String? @db.Uuid
+
+    /// 소켓  타입
+    ///
+    ///
+    type String?
+
+    /// 로그 레벨
+    ///
+    /// log, debug, warn, error, fatal 5단계를 둔다.
+    ///
+    /// - log: 단순 로그
+    /// - debug: 디버그 로그
+    /// - warn: 경고
+    /// - error: 에러 발생
+    /// - fatal: 소켓 다운
+    level String
+
+    /// 소켓 요청 헤더
+    ///
+    /// 
+    header Json? @db.Json
+
+    /// 로그를 남길 데이터
+    ///
+    /// 
+    data Json? @db.Json
+
+    /// 로그 생성 시점
+    ///
+    ///
+    created_at DateTime @db.Timestamptz()
+
+    /// relations
+    user User? @relation(fields: [user_id], references: [id])
+    // member Member? @relation(fields: [member_id], references: [id])
+
+    @@index([user_id])
+    @@index([type])
+    @@index([member_id])
+    @@index([ip])
+    @@index([created_at])
+}
