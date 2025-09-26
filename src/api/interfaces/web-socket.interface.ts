@@ -1,3 +1,4 @@
+import { IAudio } from './audio.interface';
 import { IChat } from './chat.interface';
 
 export namespace WebSocket {
@@ -29,6 +30,11 @@ export namespace WebSocket {
      * Chat
      */
     chat: WebSocket.Chat.IProvider;
+
+    /**
+     * Audio
+     */
+    audio: WebSocket.Audio.IProvider;
   }
 
   /**
@@ -41,6 +47,11 @@ export namespace WebSocket {
      * Chat
      */
     chat: WebSocket.Chat.IRemote;
+
+    /**
+     * Audio
+     */
+    audio: WebSocket.Audio.IRemote;
   }
 
   /**
@@ -67,5 +78,21 @@ export namespace WebSocket {
        */
       onAskStream: (input: IChat.IOnChatStream) => void;
     }
+  }
+
+  /**
+   * 오디오 소켓 함수 정의
+   */
+  export namespace Audio {
+    // 오디오 기능 Provider
+    export interface IProvider {
+      /**
+       * STT (음성 -> 텍스트)
+       */
+      stt: (input: IAudio.ISttInput) => Promise<IAudio.ISttOutput>;
+    }
+
+    // 오디오 기능 Remote
+    export interface IRemote {}
   }
 }
