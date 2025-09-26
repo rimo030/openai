@@ -1,3 +1,4 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { AIModel } from '../api/interfaces/ai-model.interface';
@@ -46,11 +47,11 @@ export namespace TokenUsagesProvider {
 
   export async function create(
     auth: IAuth.User,
-    AIModle: AIModel.IGetOneInput,
+    aiModle: AIModel.IGetOneInput,
     input: ITokenUsage.ICreateInput,
-  ): Promise<void> {
+  ): Promise<ITokenUsage.IGetOutput> {
     try {
-      const model = await AIModelsProvider.findByName(AIModle);
+      const model = await AIModelsProvider.findByName(aiModle);
 
       const costInputTokens =
         ((input.inputTokens - input.cachedInputTokens) / 1_000_000) * model.costPerTextInput1MTokens;
@@ -58,7 +59,8 @@ export namespace TokenUsagesProvider {
       const costOutputTokens = (input.outputTokens / 1_000_000) * model.costPerTextOutput1MTokens;
       const cost_durations = input.duration ? (input.duration * model.costPerAudio1Minutes) / 60 : null;
 
-      await GlobalConfig.prisma.tokenUsage.create({
+      const tokenUsage = await GlobalConfig.prisma.tokenUsage.create({
+        ...TokenUsagesProvider.select(),
         data: {
           id: randomUUID(),
           user_id: auth.user.id,
@@ -76,8 +78,11 @@ export namespace TokenUsagesProvider {
           created_at: new Date().toISOString(),
         },
       });
+
+      return TokenUsagesProvider.transform(tokenUsage);
     } catch (err) {
       console.error(err);
+      throw new InternalServerErrorException('토큰 사용량 저장 실패');
     }
   }
 }
