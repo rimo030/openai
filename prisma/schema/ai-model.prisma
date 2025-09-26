@@ -27,6 +27,7 @@ model AIModel {
     token_usages  TokenUsage[]
     snapshots     AIModelSnapshot[]
     last_snapshot AIModelLastSnapshot?
+    transcription Transcription[]
 
     @@unique([provider, name])
 }

@@ -5,6 +5,7 @@
 - [Actor](#actor)
 - [AI-Model](#ai-model)
 - [Log](#log)
+- [Transcription](#transcription)
 - [default](#default)
 
 ## Actor
@@ -202,7 +203,7 @@ Properties as follows:
 - `ttl`
   > ttl
   >
-  > ms 단���, 해당 요청에 대한 요청부터 응답까지의 시간.
+  > ms 단위, 해당 요청에 대한 요청부터 응답까지의 시간.
   > 값이 null이면 서버가 응답을 하지 않고 장애가 발생한 것.
 - `error`
   > 에러 발생 여부
@@ -245,6 +246,70 @@ Properties as follows:
 - `header`: 소켓 요청 헤더
 - `data`: 로그를 남길 데이터
 - `created_at`: 로그 생성 시점
+
+## Transcription
+
+```mermaid
+erDiagram
+"Transcription" {
+  String id PK
+  String ai_model_id FK
+  String language
+  Decimal duration
+  String text
+  DateTime created_at
+}
+"TranscriptionSegment" {
+  String id PK
+  String transcription_id FK
+  Int segment_id
+  Decimal start
+  Decimal end
+  String text
+  Decimal avg_logprob
+  Decimal compression_ratio
+  Decimal no_speech_prob
+}
+"TranscriptionSegment" }o--|| "Transcription" : transcription
+```
+
+### `Transcription`
+
+STT Transcription
+
+Properties as follows:
+
+- `id`: PK. 아이디
+- `ai_model_id`: FK. AI Model 아이디
+- `language`: 인식된 응답 언어의 코드 (예: "en", "ko" 등)
+- `duration`: 오디오 전체 길이(초).
+- `text`: 전체 텍스트
+- `created_at`: 데이터 저장 시간
+
+### `TranscriptionSegment`
+
+STT Transcription
+
+Properties as follows:
+
+- `id`: PK. 아이디
+- `transcription_id`: FK. Transcription 아이디
+- `segment_id`
+  > 세그먼트 아이디
+  >
+  > whisper응답에서 오는 segment id
+- `start`: 세그먼트 시간 시간 (초)
+- `end`: 세그먼트 종료 시간 (초)
+- `text`: 텍스트
+- `avg_logprob`
+  > 신뢰도 (세그먼트내 로그 평균)
+  >
+  > 0에 가까울수록 신뢰값
+- `compression_ratio`
+  > 압축 비율 (값이 클수록 텍스트에 반복이 많다는 신호)
+  >
+  > 의미 없는 반복 출력(환각)에 민감.
+- `no_speech_prob`: 무음일 확률
 
 ## default
 

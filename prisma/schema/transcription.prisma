@@ -1,0 +1,91 @@
+/// STT Transcription
+///
+/// @namespace Transcription
+model Transcription {
+    /// PK. 아이디
+    ///
+    ///
+    id String @id @db.Uuid
+
+    /// FK. AI Model 아이디
+    ///
+    ///
+    ai_model_id String @db.Uuid
+
+    /// 인식된 응답 언어의 코드 (예: "en", "ko" 등) 
+    ///
+    ///
+    language String
+
+    /// 오디오 전체 길이(초). 
+    ///
+    ///
+    duration Decimal
+
+    /// 전체 텍스트
+    ///
+    /// 
+    text String
+
+    /// 데이터 저장 시간
+    ///
+    ///
+    created_at DateTime @db.Timestamptz
+
+    /// relations
+    ai_modle AIModel                @relation(fields: [ai_model_id], references: [id])
+    segments TranscriptionSegment[]
+}
+
+/// STT Transcription
+///
+/// @namespace Transcription
+model TranscriptionSegment {
+    /// PK. 아이디
+    ///
+    ///
+    id String @id @db.Uuid
+
+    /// FK. Transcription 아이디
+    ///
+    ///
+    transcription_id String @db.Uuid
+
+    /// 세그먼트 아이디
+    ///
+    /// whisper응답에서 오는 segment id
+    segment_id Int
+
+    /// 세그먼트 시간 시간 (초)
+    ///
+    ///
+    start Decimal
+
+    /// 세그먼트 종료 시간 (초)
+    ///
+    ///
+    end Decimal
+
+    /// 텍스트
+    ///
+    ///
+    text String
+
+    /// 신뢰도 (세그먼트내 로그 평균)
+    ///
+    /// 0에 가까울수록 신뢰값
+    avg_logprob Decimal
+
+    /// 압축 비율 (값이 클수록 텍스트에 반복이 많다는 신호)
+    ///
+    /// 의미 없는 반복 출력(환각)에 민감.
+    compression_ratio Decimal
+
+    /// 무음일 확률
+    ///
+    ///
+    no_speech_prob Decimal
+
+    /// relations
+    transcription Transcription @relation(fields: [transcription_id], references: [id])
+}
