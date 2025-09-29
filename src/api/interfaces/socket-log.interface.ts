@@ -30,7 +30,7 @@ export interface ISocketLog {
   /**
    * 소켓 타입
    */
-  type: 'connect' | 'connect-reject' | 'connect-close' | 'ask' | 'ask-stream';
+  type: 'connect' | 'connect-reject' | 'connect-close' | 'ask' | 'ask-stream' | 'stt';
 
   /**
    * 로그 레벨

@@ -1,7 +1,7 @@
 import { IConnection } from '@nestia/fetcher';
 import typia from 'typia';
-import * as Apis from '../../../../src/api/functional';
 import { WebSocket } from '../../../../src/api/interfaces/web-socket.interface';
+import { test_api_web_socket_connect } from '../test_api_web_socket_connect';
 
 /**
  * 사용자는 스트리밍 채팅 기능을 사용할 수 있다.
@@ -20,10 +20,11 @@ export async function test_api_chat_stream(connection: IConnection) {
         }
       },
     },
+    audio: {},
   };
 
   // 소켓 통신 시작
-  const { connector, driver } = await Apis.websocket.connect(connection, remote);
+  const { connector, driver } = await test_api_web_socket_connect(connection, remote); // 커넥션 생성
 
   // 스트리밍 채팅
   const response = await driver.chat.askStream({ message: '안녕하세요.' });
