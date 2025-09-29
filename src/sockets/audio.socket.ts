@@ -41,10 +41,10 @@ export class AudioSocket implements WebSocket.Audio.IProvider {
 
   private async handleStt(requestId: string & tags.Format<'uuid'>, input: IAudio.ISttInput) {
     if (input.file.type === 'buffer') {
-      return OpenAIProvider.stt(this.auth, requestId, input.file.buffer);
+      return OpenAIProvider.Audio.stt(this.auth, requestId, input.file.buffer);
     } else if (input.file.type === 'path') {
       const file = createReadStream(input.file.path);
-      return OpenAIProvider.stt(this.auth, requestId, file);
+      return OpenAIProvider.Audio.stt(this.auth, requestId, file);
     } else {
       throw new BadRequestException('현재 지원하지 않는 형식입니다.');
     }
