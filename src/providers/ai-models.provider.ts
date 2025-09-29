@@ -90,6 +90,19 @@ export namespace AIModelsProvider {
         contextLength: 1_047_576,
         now,
       }),
+
+      // whisper-1
+      AIModelsProvider.upsert({
+        provider: 'OpenAI',
+        name: 'whisper-1',
+        version: null,
+        costPerTextInput1MTokens: 0,
+        costPerTextCachedInput1MTokens: 0,
+        costPerTextOutput1MTokens: 0,
+        costPerAudio1Minutes: 0.006,
+        contextLength: 0,
+        now,
+      }),
     ]);
   }
 }
