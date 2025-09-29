@@ -11,10 +11,12 @@ export namespace IAudio {
       | {
           type: 'path'; // 파일 경로
           path: string;
+          extension: (string & {}) | ('.mp3' | '.mp4' | '.mpeg' | '.mpga' | '.m4a' | '.wav' | '.webm');
         }
       | {
           type: 'buffer'; // 파일 스트림
           buffer: File;
+          extension: (string & {}) | ('.mp3' | '.mp4' | '.mpeg' | '.mpga' | '.m4a' | '.wav' | '.webm');
         }
       | {
           type: 'url'; // 저장소
