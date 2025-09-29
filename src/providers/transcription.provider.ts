@@ -5,7 +5,6 @@ import { AIModel } from '../api/interfaces/ai-model.interface';
 import { ITranscriptionSegment } from '../api/interfaces/transcription-segment.interface';
 import { ITranscription } from '../api/interfaces/transcription.interface';
 import { GlobalConfig } from '../global.config';
-import { WhisperUtil } from '../utils/whisper.util';
 import { TranscriptionSegmentProvider } from './transcription-segment.provider';
 
 export namespace TranscriptionProvider {
@@ -40,8 +39,6 @@ export namespace TranscriptionProvider {
     model: AIModel.IGetOneInput,
     input: TranscriptionVerbose,
   ): Promise<ITranscription.IGetOutput & { segments: Array<ITranscriptionSegment.IGetOutput> }> {
-    const fillterdSegment = input.segments?.filter((el) => WhisperUtil.calcConfidence(el) > 0.55);
-
     const now = new Date().toISOString();
     const transcription = await GlobalConfig.prisma.transcription.create({
       ...TranscriptionProvider.select(),
@@ -55,7 +52,7 @@ export namespace TranscriptionProvider {
             },
           },
         },
-        text: fillterdSegment ? fillterdSegment.map((el) => el.text).join() : '', // 정상 값만 text로 필터링
+        text: input.text,
         duration: input.duration,
         language: input.language,
         created_at: now,

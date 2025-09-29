@@ -1,98 +1,163 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🔊 Whisper API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+음성 인식(STT) 및 채팅 기능을 제공하는 WebSocket 기반 API 서버입니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- [ERD](./prisma/docs/ERD.md)
 
-## Description
+<br>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📚 기술 스택
 
-## Project setup
+| 분류      | 기술 스택                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Language  | [![](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white)]()                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Backend   | [![](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white)]() [![](https://img.shields.io/badge/NestJS-E0234E?style=flat-square&logo=NestJS&logoColor=white)]() [![](https://img.shields.io/badge/Nestia-C21325?style=flat-square&logo=NestJS&logoColor=white)](https://nestia.io/) [![](https://img.shields.io/badge/Typia-3178C6?style=flat-square&logo=TypeScript&logoColor=white)](https://typia.io/) [![](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=Prisma&logoColor=white)]() |
+| AI/ML     | [![](https://img.shields.io/badge/OpenAI-412991?style=flat-square&logo=OpenAI&logoColor=white)]()                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| WebSocket | [![](https://img.shields.io/badge/TGrid-C21325?style=flat-square&logo=NestJS&logoColor=white)](https://github.com/samchon/tgrid)                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| DB        | [![](https://img.shields.io/badge/Postgresql-4169E1?style=flat-square&logo=postgresql&logoColor=white)]()                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Testing   | [![](https://img.shields.io/badge/Nestia%20e2e%20Testing-C21325?style=flat-square&logo=NestJS&logoColor=white)](https://nestia.io/docs/sdk/e2e/)                                                                                                                                                                                                                                                                                                                                                                                                  |
+| DevOps    | [![](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white)]()                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
-```bash
-$ npm install
+<br>
+
+## 🎯 주요 기능
+
+### 🎤 음성 인식 (STT)
+
+- Tgird WebSocket 기반 [음성 -> 텍스트 변환] 기능 지원
+- OpenAI Whisper 모델 이용
+- 세그먼트별 상세 정보를 DB에 저장(시작/종료 시간, 신뢰도, 압축 비율 등)
+
+### 💬 채팅
+
+- Tgird WebSocket 기반 채팅 스트리밍 지원
+
+### 📊 모니터링
+
+- 토큰 사용량 및 비용 추적
+
+<br>
+
+## 🛠️ 프로젝트 실행
+
+로컬에서 아래 방법으로 서버를 실행시킬 수 있습니다.
+
+### 1. 설치
+
+```sh
+git clone https://github.com/rimo030/whisper.git
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```sh
+cd whisper
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```sh
+npm i
 ```
 
-## Deployment
+<br>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 2. 환경 변수 설정
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+`.env.example` 파일을 참고해 `env` 환경 변수 파일 세팅
 
-```bash
-$ npm install -g mau
-$ mau deploy
+<br>
+
+### 3. 로컬 DB 생성
+
+docker-compose를 이용해 PostgreSQL 컨테이너를 생성합니다.
+
+```sh
+docker compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+<br>
 
-## Resources
+### 4. DB 스키마 생성
 
-Check out a few resources that may come in handy when working with NestJS:
+Prisma를 이용해 스키마를 동기화합니다.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```sh
+npx prisma db push
+```
 
-## Support
+<br>
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 5. 서버 실행
 
-## Stay in touch
+아래 명령어로 로컬 서버를 실행시킬 수 있습니다.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```sh
+npm run start:dev
 
-## License
+npm run start
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+<br>
+
+## 🛠️ Prisma 명령어
+
+ORM으로 Prisma를 채택하고 있습니다.
+
+- DB 스키마 동기화
+
+```sh
+npx prisma db push
+
+# DB 초기화
+npx prisma db push --force-reset
+```
+
+- Prisma Client 생성
+
+```sh
+npx prisma generate
+```
+
+<br>
+
+## ⏰ 테스팅
+
+로컬에서 테스트 코드를 실행할 수 있습니다.
+
+### 1. Nestia SDK 생성
+
+```sh
+npm run build:sdk
+```
+
+<br>
+
+### 2. 테스트 빌드
+
+```sh
+npm run build:test
+```
+
+<br>
+
+### 3. 테스트 코드 실행
+
+테스트 코드는 [/test](./test)에 작성되고 있습니다.
+
+```sh
+npm run test
+```
+
+<br>
+
+## 📡 API 사용법
+
+### WebSocket 연결
+
+```typescript
+import { IConnection } from '@nestia/fetcher';
+import { test_api_web_socket_connect } from './test/features/web-sockets/test_api_web_socket_connect';
+
+const connection: IConnection = {
+  host: 'localhost:3000',
+};
+
+const { connector, driver } = await test_api_web_socket_connect(connection);
+```
