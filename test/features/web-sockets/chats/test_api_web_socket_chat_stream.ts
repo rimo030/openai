@@ -20,7 +20,6 @@ export async function test_api_chat_stream(connection: IConnection) {
         }
       },
     },
-    audio: {},
   };
 
   // 소켓 통신 시작

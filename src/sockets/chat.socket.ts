@@ -17,7 +17,7 @@ export class ChatSocket implements WebSocket.Chat.IProvider {
    */
   public async ask(input: IChat.ISendInput): Promise<IChat.ISendOutput> {
     const requestId = randomUUID();
-    const message = await OpenAIProvider.ask(this.auth, { ...input, requestId });
+    const message = await OpenAIProvider.Chat.ask(this.auth, { ...input, requestId });
 
     SocketLogsProvider.create(
       requestId,
@@ -40,7 +40,7 @@ export class ChatSocket implements WebSocket.Chat.IProvider {
   public async askStream(input: IChat.ISendInput): Promise<IChat.ISendOutput> {
     const requestId = randomUUID();
 
-    const message = await OpenAIProvider.askStream(this.auth, { ...input, requestId }, (chunk: string) => {
+    const message = await OpenAIProvider.Chat.askStream(this.auth, { ...input, requestId }, (chunk: string) => {
       // 클라이언트에게 스트리밍 청크 전송
       this.driver.chat.onAskStream({
         requestId: requestId,

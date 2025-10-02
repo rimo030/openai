@@ -7,7 +7,6 @@ export async function test_api_web_socket_connect(connection: IConnection, remot
     chat: {
       onAskStream: remote?.chat.onAskStream ?? ((input) => {}),
     },
-    audio: {},
   };
 
   // 커넥션 생성

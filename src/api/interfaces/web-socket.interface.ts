@@ -1,5 +1,9 @@
+import { VectorStoreDeleted } from 'openai/resources/index';
+import { VectorStoreFile } from 'openai/resources/vector-stores/files';
 import { IAudio } from './audio.interface';
 import { IChat } from './chat.interface';
+import { IFile } from './file.interface';
+import { IVectorStore } from './vector-store.interface';
 
 export namespace WebSocket {
   /**
@@ -35,6 +39,21 @@ export namespace WebSocket {
      * Audio
      */
     audio: WebSocket.Audio.IProvider;
+
+    /**
+     * File
+     */
+    file: WebSocket.File.IProvider;
+
+    /**
+     * VectorStore
+     */
+    vectorStore: WebSocket.VectorStore.IProvider;
+
+    /**
+     * Response
+     */
+    responses: WebSocket.Responses.IProvider;
   }
 
   /**
@@ -47,11 +66,6 @@ export namespace WebSocket {
      * Chat
      */
     chat: WebSocket.Chat.IRemote;
-
-    /**
-     * Audio
-     */
-    audio: WebSocket.Audio.IRemote;
   }
 
   /**
@@ -93,6 +107,80 @@ export namespace WebSocket {
     }
 
     // 오디오 기능 Remote
+    export interface IRemote {}
+  }
+
+  /**
+   * 파일 소켓 함수 정의
+   */
+  export namespace File {
+    // 오디오 기능 Provider
+    export interface IProvider {
+      /**
+       * 파일 업로드
+       */
+      upload: (input: { file: { name: string; data: string }; purpose: 'assistants' }) => Promise<IFile.IUploadOutput>;
+
+      /**
+       * 파일 조회
+       */
+      list: (input: IFile.IListInput) => Promise<Array<IFile.IListOutput>>;
+    }
+
+    // 파일 기능 Remote
+    export interface IRemote {}
+  }
+
+  /**
+   * VectorStore 소켓 함수 정의
+   */
+  export namespace VectorStore {
+    // VectorStore 기능 Provider
+    export interface IProvider {
+      /**
+       * VectorStore 생성
+       */
+      create: (input: IVectorStore.ICreateInput & { fileIds?: string[] }) => Promise<IVectorStore.ICreateOutput>;
+
+      /**
+       * VectorStore 리스트 조회
+       */
+      list: (input: {}) => Promise<Array<IVectorStore.IListOutput>>;
+
+      /**
+       * VectorStore에 파일 추가
+       */
+      addFile: (input: { vectorStoreId: string; fileId: string }) => Promise<VectorStoreFile>;
+
+      /**
+       * VectorStore에 올라간 파일 조회
+       */
+      listFile: (input: { vectorStoreId: string }) => Promise<VectorStoreFile[]>;
+
+      /**
+       * VectorStore 삭제
+       */
+      remove: (input: { vectorStoreId: string }) => Promise<VectorStoreDeleted>;
+    }
+
+    // VectorStore 기능 Remote
+    export interface IRemote {}
+  }
+
+  /**
+   * Response API 소켓 함수 정의
+   */
+  export namespace Responses {
+    // Response 기능 Provider
+    export interface IProvider {
+      /**
+       * Responses API를 사용한 RAG 질의응답
+       * Vector Store를 활용하여 파일 검색 기반 응답 생성
+       */
+      create: (inpnut: { vectorStoreIds: string[]; message: string }) => Promise<string>;
+    }
+
+    // Response 기능 Remote
     export interface IRemote {}
   }
 }
