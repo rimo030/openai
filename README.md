@@ -1,6 +1,6 @@
-# 🔊 Whisper API
+# 🖥️ OpenAI
 
-음성 인식(STT) 및 채팅 기능을 제공하는 WebSocket 기반 API 서버입니다.
+OpenAI API를 활용한 WebSocket 기반 실시간 통신 서버입니다.
 
 - [ERD](./prisma/docs/ERD.md)
 
@@ -24,13 +24,36 @@
 
 ### 🎤 음성 인식 (STT)
 
-- Tgird WebSocket 기반 [음성 -> 텍스트 변환] 기능 지원
-- OpenAI Whisper 모델 이용
-- 세그먼트별 상세 정보를 DB에 저장(시작/종료 시간, 신뢰도, 압축 비율 등)
+- TGrid WebSocket 기반 실시간 음성-텍스트 변환
+- OpenAI Whisper 모델 사용
+- 세그먼트별 상세 정보 DB 저장 (시작/종료 시간, 신뢰도, 압축 비율 등)
 
 ### 💬 채팅
 
-- Tgird WebSocket 기반 채팅 스트리밍 지원
+- TGrid WebSocket 기반 실시간 채팅
+- 스트리밍 응답 지원
+- 일반 응답 및 스트리밍 응답 모두 제공
+
+### 📁 파일 관리
+
+- OpenAI Files API 연동
+- 파일 업로드 (base64 인코딩 지원)
+- 파일 리스트 조회 (purpose별 필터링)
+- Assistants, Fine-tuning 등 다양한 용도 지원
+
+### 🗂️ Vector Store
+
+- Vector Store 생성 및 관리
+- 파일 추가/삭제 기능
+- Vector Store 리스트 조회
+- Vector Store별 파일 리스트 조회
+- Vector Store 삭제
+
+### 🤖 RAG (Responses API)
+
+- OpenAI Responses API를 활용한 RAG 구현
+- Vector Store 기반 문서 검색 및 응답 생성
+- 다중 Vector Store 지원
 
 ### 📊 모니터링
 
@@ -60,7 +83,7 @@ npm i
 
 ### 2. 환경 변수 설정
 
-`.env.example` 파일을 참고해 `env` 환경 변수 파일 세팅
+`.env.example` 파일을 참고해 `.env` 환경 변수 파일 세팅
 
 <br>
 
@@ -89,8 +112,10 @@ npx prisma db push
 아래 명령어로 로컬 서버를 실행시킬 수 있습니다.
 
 ```sh
+# 개발 모드
 npm run start:dev
 
+# 프로덕션 모드
 npm run start
 ```
 
